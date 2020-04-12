@@ -27,15 +27,15 @@ void main(void) {
   {
     watchdog_init();
     clock_init();
-    tiny_timer_group_init(&timer_group, tim4_system_tick_init());
-    pa3_heartbeat_init(&timer_group);
+    // tiny_timer_group_init(&timer_group, tim4_system_tick_init());
+    // pa3_heartbeat_init(&timer_group);
   }
   enableInterrupts();
 
-  kick_watchdog(&timer_group, NULL);
+  // kick_watchdog(&timer_group, NULL);
 
   while(true) {
-    tiny_timer_group_run(&timer_group);
+    // tiny_timer_group_run(&timer_group);
     wfi();
   }
 }

@@ -15,6 +15,7 @@ MAIN := src/main.c
 SRC_FILES := \
 
 SRC_DIRS := \
+  src \
 
 LIB_FILES := \
 
@@ -24,5 +25,8 @@ LIB_DIRS := \
 
 INC_DIRS := \
 	$(TINY)/include \
+
+.PHONY: default
+default: size
 
 include $(TOOLS_DIR)/makefile-worker.mk

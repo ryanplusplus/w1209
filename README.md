@@ -24,3 +24,7 @@ make -f <target>.mk erase
 ```shell
 make -f <target>.mk upload
 ```
+
+## Resources
+- https://github.com/TG9541/stm8ef/wiki/Board-W1209
+- https://vivonomicon.com/2018/07/15/the-w1209-a-sometimes-stm8-based-digital-thermostat/
