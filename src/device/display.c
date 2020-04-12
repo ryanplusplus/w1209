@@ -9,6 +9,7 @@
 #include "stm8s_gpio.h"
 #include "display.h"
 #include "tiny_utils.h"
+#include "message.h"
 
 enum {
   digit_on = 0,
@@ -116,8 +117,9 @@ static const uint8_t segment_map[] = {
 };
 
 static tiny_event_subscription_t interrupt_subscription;
+static tiny_event_subscription_t message_subscription;
 static uint8_t current_digit;
-static char display_string_buffer[3];
+static char display_string_buffer[3] = { ' ', ' ', ' ' };
 static char display_string[3];
 
 static void init_output(const output_t* output) {
@@ -159,7 +161,20 @@ static void scan(void* context, const void* args) {
   write_output(&digit[current_digit], digit_on);
 }
 
-void display_init(i_tiny_event_t* interrupt) {
+static void message_received(void* context, const void* _args) {
+  reinterpret(args, _args, const tiny_message_bus_on_receive_args_t*);
+  (void)context;
+
+  if(args->message == message_write_display) {
+    reinterpret(s, args->data, const message_write_display_data_t*);
+
+    display_string_buffer[0] = s->s[0];
+    display_string_buffer[1] = s->s[1];
+    display_string_buffer[2] = s->s[2];
+  }
+}
+
+void display_init(i_tiny_event_t* interrupt, i_tiny_message_bus_t* message_bus) {
   for(uint8_t i = 0; i < element_count(digit); i++) {
     init_output(&digit[i]);
   }
@@ -170,10 +185,7 @@ void display_init(i_tiny_event_t* interrupt) {
 
   tiny_event_subscription_init(&interrupt_subscription, NULL, scan);
   tiny_event_subscribe(interrupt, &interrupt_subscription);
-}
 
-void display_write(const char* s) {
-  display_string_buffer[0] = s[0];
-  display_string_buffer[1] = s[1];
-  display_string_buffer[2] = s[2];
+  tiny_event_subscription_init(&message_subscription, NULL, message_received);
+  tiny_event_subscribe(tiny_message_bus_on_receive(message_bus), &message_subscription);
 }
