@@ -1,4 +1,4 @@
-TARGET ?= app_tests
+TARGET ?= w1209_tests
 BUILD_DIR ?= ./build/test
 STM8_TINY = lib/stm8-tiny
 TINY = $(STM8_TINY)/lib/tiny
