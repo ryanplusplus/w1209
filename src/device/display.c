@@ -9,7 +9,7 @@
 #include "stm8s_gpio.h"
 #include "display.h"
 #include "tiny_utils.h"
-#include "message.h"
+#include "data_model.h"
 
 enum {
   digit_on = 0,
@@ -117,7 +117,7 @@ static const uint8_t segment_map[] = {
 };
 
 static tiny_event_subscription_t interrupt_subscription;
-static tiny_event_subscription_t message_subscription;
+static tiny_event_subscription_t data_change_subscription;
 static uint8_t current_digit;
 static char display_string_buffer[3] = { ' ', ' ', ' ' };
 static char display_string[3];
@@ -161,20 +161,20 @@ static void scan(void* context, const void* args) {
   write_output(&digit[current_digit], digit_on);
 }
 
-static void message_received(void* context, const void* _args) {
-  reinterpret(args, _args, const tiny_message_bus_on_receive_args_t*);
+static void data_changed(void* context, const void* _args) {
+  reinterpret(args, _args, const tiny_key_value_store_on_change_args_t*);
   (void)context;
 
-  if(args->message == message_write_display) {
-    reinterpret(s, args->data, const message_write_display_data_t*);
+  if(args->key == key_display_string) {
+    reinterpret(s, args->value, const char*);
 
-    display_string_buffer[0] = s->s[0];
-    display_string_buffer[1] = s->s[1];
-    display_string_buffer[2] = s->s[2];
+    display_string_buffer[0] = s[0];
+    display_string_buffer[1] = s[1];
+    display_string_buffer[2] = s[2];
   }
 }
 
-void display_init(i_tiny_event_t* interrupt, i_tiny_message_bus_t* message_bus) {
+void display_init(i_tiny_event_t* interrupt, i_tiny_key_value_store_t* key_value_store) {
   for(uint8_t i = 0; i < element_count(digit); i++) {
     init_output(&digit[i]);
   }
@@ -186,6 +186,6 @@ void display_init(i_tiny_event_t* interrupt, i_tiny_message_bus_t* message_bus) 
   tiny_event_subscription_init(&interrupt_subscription, NULL, scan);
   tiny_event_subscribe(interrupt, &interrupt_subscription);
 
-  tiny_event_subscription_init(&message_subscription, NULL, message_received);
-  tiny_event_subscribe(tiny_message_bus_on_receive(message_bus), &message_subscription);
+  tiny_event_subscription_init(&data_change_subscription, NULL, data_changed);
+  tiny_event_subscribe(tiny_key_value_store_on_change(key_value_store), &data_change_subscription);
 }

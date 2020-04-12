@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include "stm8s.h"
 #include "keypad.h"
-#include "message.h"
+#include "data_model.h"
 #include "tiny_utils.h"
 
 enum {
@@ -26,7 +26,7 @@ typedef struct {
   uint8_t debounce_count;
 } keymap_key_t;
 
-static i_tiny_message_bus_t* message_bus;
+static i_tiny_key_value_store_t* key_value_store;
 static tiny_timer_t timer;
 static keymap_key_t key[] = {
   { key_left, pin_3, 1, 1, 0 },
@@ -52,12 +52,12 @@ static void poll(tiny_timer_group_t* timer_group, void* context) {
       if((key[i].debounce_count == debounce_count) && (key[i].debounced_state != pin_state)) {
         key[i].debounced_state = pin_state;
 
-        message_key_event_data_t data = {
+        key_event_t data = {
           key[i].key,
-          pin_state ? key_event_release : key_event_press
+          pin_state ? key_action_release : key_action_press
         };
 
-        tiny_message_bus_send(message_bus, message_key_event, &data);
+        tiny_key_value_store_write(key_value_store, key_key_event, &data);
       }
     }
   }
@@ -65,8 +65,8 @@ static void poll(tiny_timer_group_t* timer_group, void* context) {
   tiny_timer_start(timer_group, &timer, poll_period_msec, poll, NULL);
 }
 
-void keypad_init(i_tiny_message_bus_t* _message_bus, tiny_timer_group_t* timer_group) {
-  message_bus = _message_bus;
+void keypad_init(i_tiny_key_value_store_t* _key_value_store, tiny_timer_group_t* timer_group) {
+  key_value_store = _key_value_store;
 
   for(uint8_t i = 0; i < element_count(key); i++) {
     GPIOC->DDR &= ~key[i].mask;

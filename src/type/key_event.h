@@ -6,12 +6,12 @@
 #ifndef key_event_h
 #define key_event_h
 
-#include <stdint.h>
+#include "key.h"
+#include "key_action.h"
 
-enum {
-  key_event_press,
-  key_event_release
-};
-typedef uint8_t key_event_t;
+typedef struct {
+  key_t key;
+  key_action_t key_action;
+} key_event_t;
 
 #endif
