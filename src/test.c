@@ -16,6 +16,11 @@ static void write_to_display(const char* s)
   tiny_key_value_store_write(key_value_store, key_display_string, s);
 }
 
+static void write_to_relay(bool state)
+{
+  tiny_key_value_store_write(key_value_store, key_relay_state, &state);
+}
+
 static void message_received(void* context, const void* _args)
 {
   reinterpret(args, _args, const tiny_key_value_store_on_change_args_t*);
@@ -37,6 +42,8 @@ static void message_received(void* context, const void* _args)
         write_to_display(key_event->key_action == key_action_press ? "RGT" : "   ");
         break;
     }
+
+    write_to_relay(key_event->key_action == key_action_press);
   }
 }
 
