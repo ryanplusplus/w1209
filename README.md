@@ -25,6 +25,13 @@ make -f <target>.mk erase
 make -f <target>.mk upload
 ```
 
+## Debug Pinout
+From board edge in:
+- GND
+- RST
+- SWIM
+- 3.3V/5V
+
 ## Resources
 - https://github.com/TG9541/stm8ef/wiki/Board-W1209
 - https://vivonomicon.com/2018/07/15/the-w1209-a-sometimes-stm8-based-digital-thermostat/
