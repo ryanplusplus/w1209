@@ -34,7 +34,8 @@ static keymap_key_t key[] = {
   { key_right, pin_5, 1, 1, 0 },
 };
 
-static void poll(tiny_timer_group_t* timer_group, void* context) {
+static void poll(tiny_timer_group_t* timer_group, void* context)
+{
   (void)context;
 
   uint8_t port_state = GPIOC->IDR;
@@ -65,7 +66,8 @@ static void poll(tiny_timer_group_t* timer_group, void* context) {
   tiny_timer_start(timer_group, &timer, poll_period_msec, poll, NULL);
 }
 
-void keypad_init(i_tiny_key_value_store_t* _key_value_store, tiny_timer_group_t* timer_group) {
+void keypad_init(i_tiny_key_value_store_t* _key_value_store, tiny_timer_group_t* timer_group)
+{
   key_value_store = _key_value_store;
 
   for(uint8_t i = 0; i < element_count(key); i++) {

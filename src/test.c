@@ -11,11 +11,13 @@
 static tiny_event_subscription_t data_changed_subscription;
 static i_tiny_key_value_store_t* key_value_store;
 
-static void write_to_display(const char* s) {
+static void write_to_display(const char* s)
+{
   tiny_key_value_store_write(key_value_store, key_display_string, s);
 }
 
-static void message_received(void* context, const void* _args) {
+static void message_received(void* context, const void* _args)
+{
   reinterpret(args, _args, const tiny_key_value_store_on_change_args_t*);
   (void)context;
 
@@ -38,7 +40,8 @@ static void message_received(void* context, const void* _args) {
   }
 }
 
-void test(i_tiny_key_value_store_t* _key_value_store) {
+void test(i_tiny_key_value_store_t* _key_value_store)
+{
   key_value_store = _key_value_store;
 
   tiny_event_subscription_init(&data_changed_subscription, NULL, message_received);

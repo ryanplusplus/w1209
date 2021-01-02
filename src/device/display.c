@@ -122,12 +122,14 @@ static uint8_t current_digit;
 static char display_string_buffer[3] = { ' ', ' ', ' ' };
 static char display_string[3];
 
-static void init_output(const output_t* output) {
+static void init_output(const output_t* output)
+{
   output->port->DDR |= output->mask;
   output->port->CR1 |= output->mask;
 }
 
-static void write_output(const output_t* output, uint8_t state) {
+static void write_output(const output_t* output, uint8_t state)
+{
   if(state) {
     output->port->ODR |= output->mask;
   }
@@ -136,7 +138,8 @@ static void write_output(const output_t* output, uint8_t state) {
   }
 }
 
-static void display_character(char c) {
+static void display_character(char c)
+{
   uint8_t index = c - ' ';
 
   for(uint8_t i = 0; i < element_count(segment); i++) {
@@ -144,7 +147,8 @@ static void display_character(char c) {
   }
 }
 
-static void scan(void* context, const void* args) {
+static void scan(void* context, const void* args)
+{
   (void)context;
   (void)args;
 
@@ -161,7 +165,8 @@ static void scan(void* context, const void* args) {
   write_output(&digit[current_digit], digit_on);
 }
 
-static void data_changed(void* context, const void* _args) {
+static void data_changed(void* context, const void* _args)
+{
   reinterpret(args, _args, const tiny_key_value_store_on_change_args_t*);
   (void)context;
 
@@ -174,7 +179,8 @@ static void data_changed(void* context, const void* _args) {
   }
 }
 
-void display_init(i_tiny_event_t* interrupt, i_tiny_key_value_store_t* key_value_store) {
+void display_init(i_tiny_event_t* interrupt, i_tiny_key_value_store_t* key_value_store)
+{
   for(uint8_t i = 0; i < element_count(digit); i++) {
     init_output(&digit[i]);
   }

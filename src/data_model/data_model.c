@@ -16,10 +16,12 @@ static const tiny_ram_key_value_store_configuration_t configuration = {
   element_count(key_value_pairs)
 };
 
-void data_model_init(data_model_t* self) {
+void data_model_init(data_model_t* self)
+{
   tiny_ram_key_value_store_init(&self->key_value_store, &configuration, &self->storage);
 }
 
-i_tiny_key_value_store_t* data_model_key_value_store(data_model_t* self) {
+i_tiny_key_value_store_t* data_model_key_value_store(data_model_t* self)
+{
   return &self->key_value_store.interface;
 }
