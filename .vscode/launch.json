@@ -23,7 +23,7 @@
       "name": "Test",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/test/w1209_tests",
+      "program": "${workspaceFolder}/build/test/tests",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
