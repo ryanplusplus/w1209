@@ -6,7 +6,7 @@ TINY = $(STM8_TINY)/lib/tiny
 SRC_DIRS ?= \
   $(TINY)/src \
   $(TINY)/test/double \
-  test/src/dummy \
+  test \
 
 INC_DIRS ?= \
   $(STM8_TINY)/src \
