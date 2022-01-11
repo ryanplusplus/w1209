@@ -25,8 +25,8 @@ void main(void)
   interrupts_disable();
   {
     clock_init();
-    watchdog_init(&timer_group);
     tiny_timer_group_init(&timer_group, tim4_system_tick_init());
+    watchdog_init(&timer_group);
     data_model_init(&data_model);
     display_init(tim4_system_tick_interrupt(), data_model_key_value_store(&data_model));
     keypad_init(data_model_key_value_store(&data_model), &timer_group);

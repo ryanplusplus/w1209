@@ -63,7 +63,7 @@ static void poll(tiny_timer_group_t* timer_group, void* context)
     }
   }
 
-  tiny_timer_start(timer_group, &timer, poll_period_msec, poll, NULL);
+  tiny_timer_start(timer_group, &timer, poll_period_msec, NULL, poll);
 }
 
 void keypad_init(i_tiny_key_value_store_t* _key_value_store, tiny_timer_group_t* timer_group)
