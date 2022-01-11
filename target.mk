@@ -1,14 +1,14 @@
 TARGET := w1209
-BUILD_DIR := ./build/target
-TOOLS_DIR := tools
-STM8_TINY := lib/stm8-tiny
-TINY := $(STM8_TINY)/lib/tiny
+BUILD_DIR := build
 
 DEVICE := stm8s103f3
 DEVICE_TYPE := STM8S103
 STLINK := stlinkv2
-OPENOCD_CFG := $(TOOLS_DIR)/openocd/stm8s103.cfg
-TOOLCHAIN_VERSION := 4.0.0
+OPENOCD_CFG := tools/openocd/stm8s103.cfg
+SVD := tools/svd/stm8s103f3.svd
+TOOLCHAIN_VERSION := 4.1.0
+
+include tools/defaults.mk
 
 MAIN := src/main.c
 
@@ -16,17 +16,15 @@ SRC_FILES := \
 
 SRC_DIRS := \
   src \
-
-LIB_FILES := \
-
-LIB_DIRS := \
-  $(TINY)/src \
-  $(STM8_TINY)/src \
+  src/app \
+  src/data_model \
+  src/device \
+  src/peripheral \
+  src/type \
 
 INC_DIRS := \
-	$(TINY)/include \
+  src/peripheral \
 
-.PHONY: default
-default: size
+include lib/stm8-tiny/lib_stm8-tiny.mk
 
-include $(TOOLS_DIR)/makefile-worker.mk
+include tools/tools.mk

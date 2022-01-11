@@ -6,6 +6,7 @@
 #include "stm8s.h"
 #include "relay.h"
 #include "data_model.h"
+#include "tiny_utils.h"
 
 enum {
   pin_3 = (1 << 3)
