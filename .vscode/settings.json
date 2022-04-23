@@ -7,9 +7,5 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
-  "editor.formatOnSave": true,
-  "files.associations": {
-    "tiny_utils.h": "c",
-    "stm8s_gpio.h": "c"
-  }
+  "editor.formatOnSave": true
 }
