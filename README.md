@@ -2,7 +2,7 @@
 W1209 thermostat firmware using [stm8-tiny](https://github.com/ryanplusplus/stm8-tiny).
 
 ## Setup
-- Copy `tools/Linux/udev/70-st-link.rules` to `/etc/udev/` and run `udevadm control --reload-rules`.
+- Copy `tools/tools/Linux/udev/70-st-link.rules` to `/etc/udev/` and run `udevadm control --reload-rules`.
 
 ## Use
 ### Compile
