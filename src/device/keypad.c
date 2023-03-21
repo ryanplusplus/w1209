@@ -34,7 +34,7 @@ static keymap_key_t key[] = {
   { key_right, pin_5, 1, 1, 0 },
 };
 
-static void poll(tiny_timer_group_t* timer_group, void* context)
+static void poll(void* context)
 {
   (void)context;
 
@@ -62,8 +62,6 @@ static void poll(tiny_timer_group_t* timer_group, void* context)
       }
     }
   }
-
-  tiny_timer_start(timer_group, &timer, poll_period_msec, NULL, poll);
 }
 
 void keypad_init(i_tiny_key_value_store_t* _key_value_store, tiny_timer_group_t* timer_group)
@@ -75,5 +73,5 @@ void keypad_init(i_tiny_key_value_store_t* _key_value_store, tiny_timer_group_t*
     GPIOC->CR1 |= key[i].mask;
   }
 
-  poll(timer_group, NULL);
+  tiny_timer_start_periodic(timer_group, &timer, poll_period_msec, NULL, poll);
 }
